@@ -1,12 +1,37 @@
+use clap::{crate_version, Arg, ArgAction, Command};
 use endpoints::embeddings::{EmbeddingRequest, EmbeddingsResponse};
 use qdrant::*;
 use std::fs::File;
 use std::io::prelude::*;
+use std::path::Path;
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<(), String> {
+    let matches = Command::new("llama-chat")
+        .version(crate_version!())
+        .arg(
+            Arg::new("file")
+                .short('f')
+                .long("file")
+                .value_name("FILE")
+                .help("File with the *.txt extension"),
+        )
+        .after_help("Example: wasmedge --dir .:. llama-embeddings.wasm --file test.txt\n")
+        .get_matches();
+
+    let file = matches.get_one::<String>("file").unwrap().to_string();
+    let file_path = Path::new(&file);
+    if !file_path.exists() {
+        println!("File {} does not exist", file_path.display());
+        return Err("File does not exist".to_string());
+    }
+    if file_path.extension().is_none() || file_path.extension().unwrap() != "txt" {
+        println!("File {} is not a text file", file_path.display());
+        return Err("File is not a text file".to_string());
+    }
+
     // read contents from a text file
-    let mut file = File::open("test.txt").expect("failed to open file");
+    let mut file = File::open(file_path).expect("failed to open file");
     let mut contents = String::new();
     file.read_to_string(&mut contents)
         .expect("failed to read file");
