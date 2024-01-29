@@ -1,0 +1,13 @@
+[package]
+name = "llama-embeddings"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0"
+reqwest_wasi = { version = "0.11", features = ["json", "wasmedge-tls"] }
+endpoints = { path = "/Volumes/Dev/secondstate/me/llama-utils/api-server/endpoints" }
+tokio_wasi = { version = "1", features = ["full"] }
+serde_json = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+qdrant_rest_client = "0.0.1"
