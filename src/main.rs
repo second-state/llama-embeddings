@@ -50,7 +50,7 @@ async fn main() -> Result<(), String> {
 
     // create a client
     let client = reqwest::Client::new();
-    match client
+    let embeddings = match client
         .post("http://localhost:8080/v1/embeddings")
         .header("accept", "application/json")
         .header("Content-Type", "application/json")
@@ -58,26 +58,54 @@ async fn main() -> Result<(), String> {
         .send()
         .await
     {
-        Ok(res) => {
-            let embedding_reponse: EmbeddingsResponse = res.json().await.unwrap();
+        Ok(response) => {
+            let embedding_reponse: EmbeddingsResponse = response.json().await.unwrap();
             // println!("Response: {:?}", embedding_reponse);
-            println!("Embeddings data: {:?}", embedding_reponse.data);
+            println!(
+                "Number of embedding objects: {}",
+                embedding_reponse.data.len()
+            );
+
+            embedding_reponse.data
         }
         Err(err) => {
             println!("Error: {}", err);
-            // return Err(err.to_string());
+            return Err(err.to_string());
         }
     };
 
     // todo: write the embeddings to a connected qdrant db
 
     {
-        // let client = qdrant::Qdrant::new();
-        // // Create a collection with 10-dimensional vectors
-        // let r = client.create_collection("my_test", 4).await;
-        // println!("Create collection result is {:?}", r);
+        let collection_name = "my_test";
 
-        // let mut points = Vec::<Point>::new();
+        let client = qdrant::Qdrant::new();
+        let dim = 2048u32;
+
+        // Create a collection with 10-dimensional vectors
+        match client.create_collection(collection_name, dim).await {
+            Ok(_) => {
+                println!("Collection created");
+            }
+            Err(err) => {
+                println!("Error: {}", err);
+                return Err(err.to_string());
+            }
+        }
+
+        let mut points = Vec::<Point>::new();
+
+        for embedding in embeddings.iter() {
+            let vector = embedding.embedding.iter().map(|x| *x as f32).collect();
+            let p = Point {
+                id: PointId::Num(embedding.index),
+                vector,
+                payload: None,
+            };
+
+            points.push(p);
+        }
+
         // points.push(Point {
         //     id: PointId::Num(1),
         //     vector: vec![0.05, 0.61, 0.76, 0.74],
@@ -111,16 +139,23 @@ async fn main() -> Result<(), String> {
         //     payload: json!({"city": "Mumbai"}).as_object().map(|m| m.to_owned()),
         // });
 
-        // let r = client.upsert_points("my_test", points).await;
-        // println!("Upsert points result is {:?}", r);
+        match client.upsert_points(collection_name, points).await {
+            Ok(_) => {
+                println!("Points upserted");
+            }
+            Err(err) => {
+                println!("Error: {}", err);
+                return Err(err.to_string());
+            }
+        }
 
-        // println!(
-        //     "The collection size is {}",
-        //     client.collection_info("my_test").await
-        // );
+        println!(
+            "The collection size is {}",
+            client.collection_info(collection_name).await
+        );
 
-        // let p = client.get_point("my_test", 2).await;
-        // println!("The second point is {:?}", p);
+        let p = client.get_point("my_test", 0).await;
+        println!("The second point is {:?}", p);
 
         // let ps = client.get_points("my_test", vec![1, 2, 3, 4, 5, 6]).await;
         // println!("The 1-6 points are {:?}", ps);
@@ -129,13 +164,20 @@ async fn main() -> Result<(), String> {
         // let r = client.search_points("my_test", q, 2).await;
         // println!("Search result points are {:?}", r);
 
-        // let r = client.delete_points("my_test", vec![1, 4]).await;
-        // println!("Delete points result is {:?}", r);
+        match client.delete_points("my_test", vec![0]).await {
+            Ok(_) => {
+                println!("Point deleted");
+            }
+            Err(err) => {
+                println!("Error: {}", err);
+                return Err(err.to_string());
+            }
+        }
 
-        // println!(
-        //     "The collection size is {}",
-        //     client.collection_info("my_test").await
-        // );
+        println!(
+            "The collection size is {}",
+            client.collection_info("my_test").await
+        );
 
         // let q = vec![0.2, 0.1, 0.9, 0.7];
         // let r = client.search_points("my_test", q, 2).await;
