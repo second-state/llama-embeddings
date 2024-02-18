@@ -120,16 +120,6 @@ async fn main() -> Result<(), String> {
     // create a Qdrant client
     let qdrant_client = qdrant::Qdrant::new();
 
-    // // Delete the collection if it exists
-    // match qdrant_client.delete_collection_api(collection_name).await {
-    //     Ok(_) => {
-    //         println!("Collection deleted");
-    //     }
-    //     Err(err) => {
-    //         println!("{}", err.to_string());
-    //     }
-    // }
-
     // Create a collection with `dim`-dimensional vectors
     println!("[+] Creating a collection ...");
     let collection_name = "my_test";
@@ -149,40 +139,6 @@ async fn main() -> Result<(), String> {
         println!("Failed to upsert points. {}", err.to_string());
         return Err(err.to_string());
     }
-
-    // println!(
-    //     "The collection size is {}",
-    //     qdrant_client.collection_info(collection_name).await
-    // );
-
-    // let p = client.get_point("my_test", 0).await;
-    // println!("The second point is {:?}", p);
-
-    // let ps = client.get_points("my_test", vec![1, 2, 3, 4, 5, 6]).await;
-    // println!("The 1-6 points are {:?}", ps);
-
-    // let q = vec![0.2, 0.1, 0.9, 0.7];
-    // let r = client.search_points("my_test", q, 2).await;
-    // println!("Search result points are {:?}", r);
-
-    // match client.delete_points("my_test", vec![0]).await {
-    //     Ok(_) => {
-    //         println!("Point deleted");
-    //     }
-    //     Err(err) => {
-    //         println!("Error: {}", err);
-    //         return Err(err.to_string());
-    //     }
-    // }
-
-    // println!(
-    //     "The collection size is {}",
-    //     client.collection_info("my_test").await
-    // );
-
-    // let q = vec![0.2, 0.1, 0.9, 0.7];
-    // let r = client.search_points("my_test", q, 2).await;
-    // println!("Search result points are {:?}", r);
 
     // * compute embeddings for a query
     {
@@ -206,10 +162,6 @@ async fn main() -> Result<(), String> {
         {
             Ok(response) => {
                 let embedding_reponse: EmbeddingsResponse = response.json().await.unwrap();
-                // println!(
-                //     "Number of embedding objects: {}",
-                //     embedding_reponse.data.len()
-                // );
 
                 embedding_reponse.data[0].clone()
             }
@@ -236,11 +188,11 @@ async fn main() -> Result<(), String> {
             .await;
 
         for (i, point) in search_result.iter().enumerate() {
-            println!("  *** Point {}: score: {}", i, point.score);
+            println!("    * Point {}: score: {}", i, point.score);
 
             if let Some(payload) = &point.payload {
                 if let Some(source) = payload.get("source") {
-                    println!("    Source: {}", source);
+                    println!("      Source: {}", source);
                 }
             }
         }
