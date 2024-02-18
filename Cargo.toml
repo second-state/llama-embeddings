@@ -12,3 +12,5 @@ serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 qdrant_rest_client = "0.0.1"
 clap = { version = "4.4.6", features = ["cargo"] }
+text-splitter = { version = "0.6.3", features = ["tiktoken-rs"] }
+tiktoken-rs = "0.5.8"
