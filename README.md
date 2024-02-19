@@ -39,7 +39,7 @@
 - Run
 
   ```bash
-  wasmedge --dir .:. llama-embeddings.wasm --file paris.txt
+  wasmedge --dir .:. llama-embeddings.wasm --file bitcoin.txt
   ```
 
   If the command runs successfully, you will see the following output:
@@ -58,17 +58,27 @@
 
   =========== Tiny RAG Demo ===========
 
-  [You] What is the capital of France?
+  [You] What is bitcoin?
 
 
   [+] Creating embeddings for the chunks ...
       * Number of embedding objects: 1
   [+] Searching for similar points ...
-      * Point 0: score: 0.39630103
-        Source: "Paris occupies a central position in the rich agricultural region known as the Paris Basin, and it constitutes one of eight départements of the Île-de-France administrative region. It is by far the country’s most important centre of commerce and culture. Area city, 41 square miles (105 square km); metropolitan area, 890 square miles (2,300 square km)."
-      * Point 1: score: 0.35577077
-        Source: "Paris, city and capital of France, situated in the north-central part of the country. People were living on the site of the present-day city, located along the Seine River some 233 miles (375 km) upstream from the river’s mouth on the English Channel (La Manche), by about 7600 BCE. The modern city has spread from the island (the Île de la Cité) and far beyond both banks of the Seine."
+      * Point 0: score: 0.4680615
+        Source: "uncertainties can be avoided in person by using physical currency, but no mechanism\nexists to make payments over a communications channel without a trusted party."
+      * Point 1: score: 0.4614826
+        Source: "basis, and nodes can leave and rejoin the network at will, accepting the longest\nproof-of-work chain as proof of what happened while they were gone. Bitcoin is a\npeer-to-peer electronic cash system."
+      * Point 2: score: 0.20994519
+        Source: "hash-based proof-of-work, forming a record that cannot be changed without redoing\nthe proof-of-work. The longest chain not only serves as proof of the sequence of\nevents witnessed, but proof that it came from the largest pool of CPU power. As\nlong as a majority of CPU power is controlled by nodes that are not cooperating to\nattack the network, they'll generate the longest chain and outpace attackers. The\nnetwork itself requires minimal structure. Messages are broadcast on a best effort"
 
 
-  [Bot]: Based on the provided context, the capital of France is Paris.
+
+  [Bot]: Based on the provided context, Bitcoin can be described as:
+
+  * A peer-to-peer electronic cash system that allows for payments to be made without the need for a trusted party.
+  * Using hash-based proof-of-work to form a record of transactions that cannot be changed without redoing the proof-of-work.
+  * A decentralized network where nodes can leave and rejoin at will, accepting the longest proof-of-work chain as proof of what happened while they were gone.
+  * Requiring minimal structure, with messages broadcast on a best-effort basis.
+
+  In summary, Bitcoin is a decentralized digital currency that uses cryptography to secure and verify transactions without the need for a central authority.
   ```
