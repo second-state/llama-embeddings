@@ -82,3 +82,17 @@
 
   In summary, Bitcoin is a decentralized digital currency that uses cryptography to secure and verify transactions without the need for a central authority.
   ```
+
+## Workflow
+
+- Compute and store embeddings for a given text file
+
+  <!-- ![alt text](image/embedding.png) -->
+
+  <img src="image/embedding.png" width=80% align=center />
+
+- RAG-based chatbot
+
+  <!-- ![alt text](image/rag.png) -->
+
+  <img src="image/rag.png" width=100% align=center />
