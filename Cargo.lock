@@ -148,8 +148,10 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 [[package]]
 name = "chat-prompts"
 version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "98039581b1be615f31853323915ad15a111f23214996d577b082e7544110043f"
 dependencies = [
- "endpoints",
+ "endpoints 0.2.0",
  "enum_dispatch",
  "thiserror",
 ]
@@ -225,7 +227,18 @@ dependencies = [
 
 [[package]]
 name = "endpoints"
-version = "0.3.0"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "844f278cb4e558c0cb2f920bbb221884bfa35cace9e61d3e238fc01ec09ca8a5"
+dependencies = [
+ "serde",
+]
+
+[[package]]
+name = "endpoints"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "df07e2ad421b9a7e18d50565d93ae4d1e160d90c1fa491f292f692b2ef1609fc"
 dependencies = [
  "serde",
 ]
@@ -555,7 +568,7 @@ dependencies = [
  "anyhow",
  "chat-prompts",
  "clap",
- "endpoints",
+ "endpoints 0.4.0",
  "futures",
  "qdrant_rest_client",
  "reqwest_wasi",

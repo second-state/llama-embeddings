@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 anyhow = "1.0"
 reqwest_wasi = { version = "0.11", features = ["json", "wasmedge-tls", "stream"] }
-endpoints = { path = "/Volumes/Dev/secondstate/me/llama-utils/api-server/endpoints" }
+endpoints = "^0.4"
 tokio_wasi = { version = "1", features = ["full"] }
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
@@ -14,5 +14,5 @@ qdrant_rest_client = "0.0.1"
 clap = { version = "4.4.6", features = ["cargo"] }
 text-splitter = { version = "0.6.3", features = ["tiktoken-rs"] }
 tiktoken-rs = "0.5.8"
-chat-prompts = { path = "/Volumes/Dev/secondstate/me/llama-utils/api-server/chat-prompts", version = "^0.4" }
+chat-prompts = "^0.4"
 futures = "0.3"
