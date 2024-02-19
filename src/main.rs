@@ -1,13 +1,11 @@
 use clap::{crate_version, Arg, Command};
 use endpoints::{
     chat::{
-        ChatCompletionChunk, ChatCompletionObject, ChatCompletionRequestBuilder,
-        ChatCompletionRequestMessage, ChatCompletionRole,
+        ChatCompletionObject, ChatCompletionRequestBuilder, ChatCompletionRequestMessage,
+        ChatCompletionRole,
     },
-    common::FinishReason,
     embeddings::{EmbeddingObject, EmbeddingRequest, EmbeddingsResponse},
 };
-use futures::StreamExt;
 use qdrant::*;
 use std::io::prelude::*;
 use std::path::Path;
@@ -171,7 +169,8 @@ async fn main() -> Result<(), String> {
 
     println!("\n\n=========== Tiny RAG Demo ===========\n");
 
-    let query_text = "What is the capital of France?";
+    // let query_text = "What is the capital of France?";
+    let query_text = "What is bitcoin?";
     println!("[You] {}\n\n", query_text);
 
     let query_embedding = llama_compute_embeddings(&[query_text.into()]).await?;
@@ -182,8 +181,9 @@ async fn main() -> Result<(), String> {
         .collect();
 
     // search for similar points
+    let top = 3;
     let search_result =
-        qdrant_search_similar_points(&qdrant_client, collection_name, query_vector, 2).await?;
+        qdrant_search_similar_points(&qdrant_client, collection_name, query_vector, top).await?;
 
     // list the search results
     let mut context = Vec::new();
